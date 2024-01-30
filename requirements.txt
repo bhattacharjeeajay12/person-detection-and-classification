@@ -1,0 +1,7 @@
+ultralytics
+torch 
+torchvision 
+torchaudio
+pandas
+pillow
+opencv-python-headless
