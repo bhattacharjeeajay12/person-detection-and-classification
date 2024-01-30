@@ -2,9 +2,10 @@ import torch
 import torch.nn as nn
 from torchvision import  transforms, models
 from PIL import Image
+from pathlib import Path
 
 def get_class_labels():
-    with open('models\class_labels.txt') as f:
+    with open(Path('models/class_labels.txt')) as f:
             labels = [line.strip() for line in f.readlines()]
     return labels
 
@@ -22,7 +23,7 @@ def load_object_classifier(labels):
     # Initialize the custom model
     model = CustomMobileNetV2(num_classes=len(labels))
     # Load the best model weights
-    model.load_state_dict(torch.load('models\image_classifier.pth', map_location=torch.device('cpu')))  
+    model.load_state_dict(torch.load(Path('models/image_classifier.pth'), map_location=torch.device('cpu')))  
     return model
 
 def get_image_class(model, labels, image_path):
