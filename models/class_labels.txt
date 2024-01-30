@@ -1,0 +1,5 @@
+dunzo
+other
+swiggy
+ubereats
+zomato
