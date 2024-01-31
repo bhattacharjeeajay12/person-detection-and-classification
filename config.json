@@ -3,4 +3,5 @@
     "oc_model_path": "models/image_classifier.pth",
     "oc_label_path": "models/class_labels.txt",
     "image_out_path": "static/outputs"
+    
 }
