@@ -2,9 +2,13 @@ from ultralytics import YOLO
 import pandas as pd
 from PIL import Image
 from pathlib import Path
+from udf import load_json
+import os
+
+config = load_json("config.json")
 
 def load_object_detector():
-    model_path = Path("models/object_detector_best.pt")
+    model_path = Path(config["od_model_path"])
     model = YOLO(model_path)
     return model
 
@@ -12,7 +16,7 @@ def get_object_image(result_df, img_path):
     object_path_list = []
     for idx, row in result_df.iterrows():
         xmin, ymin, xmax, ymax = row["xmin"], row["ymin"], row["xmax"], row["ymax"]
-        output_image_path = "static/outputs/img_" + str(idx) + ".jpg"
+        output_image_path =  os.path.join(config["image_out_path"] , "/img_" + str(idx) + ".jpg")
         object_path_list.append(output_image_path)
         try:
             with Image.open(img_path) as img:

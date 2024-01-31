@@ -1,11 +1,15 @@
 from flask import Flask, render_template, request, redirect
 from object_detector import get_object_detection, load_object_detector
-from object_classifier import get_image_clasess, load_object_classifier, get_class_labels, generate_comment
+from object_classifier import load_object_classifier, get_image_clasess
+from udf import generate_comment, get_class_labels, load_json
 import os
 from pathlib import Path
 
 #load models and labels
-labels = get_class_labels()
+
+config = load_json("config.json")
+
+labels = get_class_labels(config["oc_label_path"])
 model_object_detector = load_object_detector()
 model_object_classifier = load_object_classifier(labels)
 
@@ -43,4 +47,3 @@ def upload():
     # if not os.path.exists('uploads'):
     #     os.makedirs('uploads')
     # app.run(debug=True)
-    

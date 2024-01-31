@@ -1,0 +1,6 @@
+{
+    "od_model_path": "models/object_detector_best.pt",
+    "oc_model_path": "models/image_classifier.pth",
+    "oc_label_path": "models/class_labels.txt",
+    "image_out_path": "static/outputs"
+}

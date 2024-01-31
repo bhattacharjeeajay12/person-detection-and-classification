@@ -2,12 +2,11 @@ import torch
 import torch.nn as nn
 from torchvision import  transforms, models
 from PIL import Image
+from udf import load_json
 from pathlib import Path
 
-def get_class_labels():
-    with open(Path('models/class_labels.txt')) as f:
-            labels = [line.strip() for line in f.readlines()]
-    return labels
+
+config = load_json("config.json")
 
 def load_object_classifier(labels):
     
@@ -23,7 +22,7 @@ def load_object_classifier(labels):
     # Initialize the custom model
     model = CustomMobileNetV2(num_classes=len(labels))
     # Load the best model weights
-    model.load_state_dict(torch.load(Path('models/image_classifier.pth'), map_location=torch.device('cpu')))  
+    model.load_state_dict(torch.load(Path(config["oc_model_path"]), map_location=torch.device('cpu')))  
     return model
 
 def get_image_class(model, labels, image_path):
@@ -39,8 +38,6 @@ def get_image_class(model, labels, image_path):
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
 
-    # Load and preprocess the input image (adjust the image path)
-    # image_path = 'tgoogle\images\cropped_images\Dunzo Delivery Boy_107_dunzo_4.jpg'
     image = Image.open(image_path)
     input_tensor = transform(image)
     input_batch = input_tensor.unsqueeze(0)  # Add a batch dimension
@@ -57,15 +54,6 @@ def get_image_class(model, labels, image_path):
     predicted_class_label = labels[predicted_class_index]
     print("predicted_class_label : ", predicted_class_label)
     return predicted_class_label
-
-def generate_comment(person_count, class_dict):
-    if person_count>0:
-        comment = str(person_count) + " person(s) detected. "
-        if len(class_dict)>0:
-            comment = str(len(class_dict)) + " delivery person(s) detected. Distribution is " + str(class_dict)
-    else:
-        comment = "No Person Detetcted"
-    return comment
 
 def get_image_clasess(model, labels, image_path_list):
     class_dict = {}
